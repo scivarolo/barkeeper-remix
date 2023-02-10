@@ -1,0 +1,132 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String           @id @default(uuid())
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  username           String           @unique
+  passwordHash       String
+  createdCocktails   Cocktail[]
+  createdIngredients Ingredient[]
+  createdProducts    Product[]
+  cocktails          UserCocktail[]
+  ingredients        UserIngredient[]
+  products           UserProduct[]
+  history            UserHistory[]
+  shoppingItems      ShoppingItem[]
+  tabCocktails       TabCocktail[]
+}
+
+model Cocktail {
+  id           Int            @id @default(autoincrement())
+  name         String
+  instructions String?
+  notes        String?
+  ingredients  Ingredient[]
+  createdBy    User           @relation(fields: [createdById], references: [id])
+  createdById  String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  UserCocktail UserCocktail[]
+  UserHistory  UserHistory[]
+  TabCocktail  TabCocktail[]
+}
+
+model Ingredient {
+  id             Int              @id @default(autoincrement())
+  name           String
+  isLiquid       Boolean          @default(true)
+  createdBy      User             @relation(fields: [createdById], references: [id])
+  createdById    String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  cocktails      Cocktail[]
+  Product        Product[]
+  UserIngredient UserIngredient[]
+  ShoppingItem   ShoppingItem[]
+}
+
+model Product {
+  id           Int            @id @default(autoincrement())
+  name         String
+  ingredient   Ingredient     @relation(fields: [ingredientId], references: [id])
+  ingredientId Int
+  quantity     Int
+  unit         String
+  createdBy    User           @relation(fields: [createdById], references: [id])
+  createdById  String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  UserProduct  UserProduct[]
+  ShoppingItem ShoppingItem[]
+}
+
+model UserCocktail {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id])
+  cocktail   Cocktail @relation(fields: [cocktailId], references: [id])
+  userId     String
+  cocktailId Int
+  dateAdded  DateTime @default(now())
+
+  @@unique([userId, cocktailId])
+}
+
+model UserIngredient {
+  id           Int        @id @default(autoincrement())
+  user         User       @relation(fields: [userId], references: [id])
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  userId       String
+  ingredientId Int
+  dateAdded    DateTime   @default(now())
+
+  @@unique([userId, ingredientId])
+}
+
+model UserProduct {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  userId    String
+  productId Int
+  dateAdded DateTime @default(now())
+}
+
+model UserHistory {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id])
+  cocktail   Cocktail @relation(fields: [cocktailId], references: [id])
+  drinkDate  DateTime @default(now())
+  userId     String
+  cocktailId Int
+}
+
+model ShoppingItem {
+  id           Int         @id @default(autoincrement())
+  ingredient   Ingredient? @relation(fields: [ingredientId], references: [id])
+  product      Product?    @relation(fields: [productId], references: [id])
+  quantity     Int         @default(1)
+  user         User        @relation(fields: [userId], references: [id])
+  ingredientId Int?
+  productId    Int?
+  userId       String
+  dateAdded    DateTime    @default(now())
+}
+
+model TabCocktail {
+  id         Int      @id @default(autoincrement())
+  cocktail   Cocktail @relation(fields: [cocktailId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+  cocktailId Int
+  userId     String
+}
