@@ -2,10 +2,7 @@
 module.exports = {
   ignoredRouteFiles: ["**/.*"],
   future: {
-    v2_routeConvention: false,
+    v2_routeConvention: true,
+    unstable_tailwind: true,
   },
-  // appDirectory: "app",
-  // assetsBuildDirectory: "public/build",
-  // serverBuildPath: "build/index.js",
-  // publicPath: "/build/",
 };
