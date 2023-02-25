@@ -1,8 +1,12 @@
-import { json, LoaderArgs } from "@remix-run/node";
+import { json, LoaderArgs, MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import Container from "~/components/Container";
 import { db } from "~/utils/db.server";
 import { requireUserId } from "~/utils/session.server";
+
+export const meta: MetaFunction = () => ({
+  title: "Pantry | Barkeeper",
+});
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await requireUserId(request);

@@ -1,9 +1,12 @@
-import type { LoaderArgs } from "@remix-run/node";
+import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, Outlet, useLoaderData } from "@remix-run/react";
-import NavBar from "~/components/nav/NavBar";
+import { Form, useLoaderData } from "@remix-run/react";
 import { db } from "~/utils/db.server";
 import { requireUserId } from "~/utils/session.server";
+
+export const meta: MetaFunction = () => ({
+  title: "Counter | Barkeeper",
+});
 
 export const loader = async ({ request }: LoaderArgs) => {
   const userId = await requireUserId(request);
