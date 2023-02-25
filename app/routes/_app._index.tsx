@@ -1,4 +1,8 @@
-import type { LoaderArgs, MetaFunction } from "@remix-run/node";
+import type {
+  ErrorBoundaryComponent,
+  LoaderArgs,
+  MetaFunction,
+} from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
 import { db } from "~/utils/db.server";
@@ -36,3 +40,7 @@ export default function Index() {
     </>
   );
 }
+
+export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => (
+  <ErrorBoundary error={error} />
+);

@@ -1,5 +1,10 @@
 import { User } from "@prisma/client";
-import { json, LoaderArgs, redirect } from "@remix-run/node";
+import {
+  ErrorBoundaryComponent,
+  json,
+  LoaderArgs,
+  redirect,
+} from "@remix-run/node";
 import { Outlet, useLoaderData, useOutletContext } from "@remix-run/react";
 import NavBar from "~/components/nav/NavBar";
 import { db } from "~/utils/db.server";
@@ -34,3 +39,7 @@ interface UserContext {
 export function useUser() {
   return useOutletContext<UserContext>();
 }
+
+export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => (
+  <ErrorBoundary error={error} />
+);

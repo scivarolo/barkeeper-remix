@@ -1,4 +1,9 @@
-import { json, LoaderArgs, MetaFunction } from "@remix-run/node";
+import {
+  ErrorBoundaryComponent,
+  json,
+  LoaderArgs,
+  MetaFunction,
+} from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import Container from "~/components/Container";
 import { db } from "~/utils/db.server";
@@ -16,6 +21,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export default function Cocktails() {
   const { cocktails } = useLoaderData<typeof loader>();
+  // throw Error("fuck");
   return (
     <Container>
       <h1>Cocktails</h1>
@@ -27,3 +33,7 @@ export default function Cocktails() {
     </Container>
   );
 }
+
+export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => (
+  <ErrorBoundary error={error} />
+);
