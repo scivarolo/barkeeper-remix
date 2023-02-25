@@ -84,7 +84,7 @@ export default function Register() {
               <input
                 type="hidden"
                 name="redirectTo"
-                value={searchParams.get("redirectTo") ?? "/dashboard"}
+                value={searchParams.get("redirectTo") ?? "/"}
               />
               <FormControl>
                 <Label htmlFor="username">Username</Label>

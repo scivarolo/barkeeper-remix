@@ -76,7 +76,7 @@ export default function Login() {
                 type="hidden"
                 name="redirectTo"
                 id="redirectTo"
-                value={searchParams.get("redirectTo") ?? "/dashboard"}
+                value={searchParams.get("redirectTo") ?? "/"}
               />
               <FormControl>
                 <Label htmlFor="username">Username</Label>

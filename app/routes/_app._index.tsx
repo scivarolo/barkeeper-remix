@@ -1,15 +1,20 @@
-import { json, LoaderArgs } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import type { LoaderArgs } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import { Form, Outlet, useLoaderData } from "@remix-run/react";
+import NavBar from "~/components/nav/NavBar";
 import { db } from "~/utils/db.server";
 import { requireUserId } from "~/utils/session.server";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const userId = await requireUserId(request);
   const user = await db.user.findUnique({ where: { id: userId } });
+  if (!user) {
+    return redirect("/landing");
+  }
   return json({ user });
 };
 
-export default function Dashboard() {
+export default function Index() {
   const data = useLoaderData<typeof loader>();
 
   return (

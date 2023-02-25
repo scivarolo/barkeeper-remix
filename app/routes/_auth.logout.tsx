@@ -7,5 +7,5 @@ export const action = async ({ request }: LoaderArgs) => {
 };
 
 export const loader = async () => {
-  return redirect("/");
+  return redirect("/landing");
 };
