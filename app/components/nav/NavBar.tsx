@@ -12,11 +12,14 @@ export default function NavBar({ username }: NavBarProps) {
         <a className="btn-ghost btn text-xl normal-case" href="/">
           Barkeeper
         </a>
+        <ul className="menu menu-horizontal">
+          <NavButton to="/pantry">My Pantry</NavButton>
+        </ul>
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal">
           <NavButton to="/cocktails">Cocktails</NavButton>
-          <NavButton to="/pantry">Pantry</NavButton>
+          <NavButton to="/ingredients">Ingredients</NavButton>
         </ul>
         <AuthMenu username={username} />
       </div>

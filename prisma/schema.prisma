@@ -43,17 +43,25 @@ model Cocktail {
 }
 
 model Ingredient {
-  id             Int              @id @default(autoincrement())
-  name           String
-  isLiquid       Boolean          @default(true)
-  createdBy      User             @relation(fields: [createdById], references: [id])
-  createdById    String
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  cocktails      Cocktail[]
-  Product        Product[]
-  UserIngredient UserIngredient[]
-  ShoppingItem   ShoppingItem[]
+  id               Int              @id @default(autoincrement())
+  name             String           @unique
+  type             IngredientType?  @relation(fields: [ingredientTypeId], references: [id])
+  ingredientTypeId Int?
+  createdBy        User             @relation(fields: [createdById], references: [id])
+  createdById      String
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  cocktails        Cocktail[]
+  Product          Product[]
+  UserIngredient   UserIngredient[]
+  ShoppingItem     ShoppingItem[]
+}
+
+model IngredientType {
+  id         Int          @id @default(autoincrement())
+  name       String       @unique
+  isLiquid   Boolean      @default(true)
+  Ingredient Ingredient[]
 }
 
 model Product {
