@@ -1,6 +1,11 @@
-import { NavLink } from "@remix-run/react";
+import { User } from "@prisma/client";
+import { NavLink, useSubmit } from "@remix-run/react";
 
-export default function NavBar() {
+interface NavBarProps {
+  username: string;
+}
+
+export default function NavBar({ username }: NavBarProps) {
   return (
     <div className="navbar w-full bg-primary text-white">
       <div className="flex-1">
@@ -13,7 +18,48 @@ export default function NavBar() {
           <NavButton to="/cocktails">Cocktails</NavButton>
           <NavButton to="/pantry">Pantry</NavButton>
         </ul>
+        <AuthMenu username={username} />
       </div>
+    </div>
+  );
+}
+
+interface AuthMenuProps {
+  username: string;
+}
+function AuthMenu({ username }: AuthMenuProps) {
+  const logout = useSubmit();
+  return (
+    <div className="dropdown-bottom dropdown-end dropdown">
+      <label tabIndex={0} className="btn-primary btn">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="h-6 w-6">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+          />
+        </svg>
+      </label>
+      <ul
+        tabIndex={0}
+        className="dropdown-content menu rounded-box w-52 bg-base-100 p-2 shadow">
+        <li>
+          <p>Hi {username}</p>
+        </li>
+        <li>
+          <a
+            href="/logout"
+            onClick={() => logout(null, { method: "post", action: "/logout" })}>
+            Logout
+          </a>
+        </li>
+      </ul>
     </div>
   );
 }
