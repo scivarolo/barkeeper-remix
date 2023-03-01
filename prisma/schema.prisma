@@ -28,18 +28,18 @@ model User {
 }
 
 model Cocktail {
-  id           Int            @id @default(autoincrement())
-  name         String
-  instructions String?
-  notes        String?
-  ingredients  Ingredient[]
-  createdBy    User           @relation(fields: [createdById], references: [id])
-  createdById  String
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  UserCocktail UserCocktail[]
-  UserHistory  UserHistory[]
-  TabCocktail  TabCocktail[]
+  id            Int            @id @default(autoincrement())
+  name          String
+  instructions  String?
+  notes         String?
+  ingredients   Ingredient[]
+  createdBy     User           @relation(fields: [createdById], references: [id])
+  createdById   String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  userCocktails UserCocktail[]
+  userHistory   UserHistory[]
+  tabCocktail   TabCocktail[]
 }
 
 model Ingredient {
@@ -52,31 +52,31 @@ model Ingredient {
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @updatedAt
   cocktails        Cocktail[]
-  Product          Product[]
-  UserIngredient   UserIngredient[]
-  ShoppingItem     ShoppingItem[]
+  products         Product[]
+  userIngredients  UserIngredient[]
+  shoppingItems    ShoppingItem[]
 }
 
 model IngredientType {
-  id         Int          @id @default(autoincrement())
-  name       String       @unique
-  isLiquid   Boolean      @default(true)
-  Ingredient Ingredient[]
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  isLiquid    Boolean      @default(true)
+  ingredients Ingredient[]
 }
 
 model Product {
-  id           Int            @id @default(autoincrement())
-  name         String
-  ingredient   Ingredient     @relation(fields: [ingredientId], references: [id])
-  ingredientId Int
-  quantity     Int
-  unit         String
-  createdBy    User           @relation(fields: [createdById], references: [id])
-  createdById  String
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  UserProduct  UserProduct[]
-  ShoppingItem ShoppingItem[]
+  id            Int            @id @default(autoincrement())
+  name          String
+  ingredient    Ingredient     @relation(fields: [ingredientId], references: [id])
+  ingredientId  Int
+  quantity      Int
+  unit          String
+  createdBy     User           @relation(fields: [createdById], references: [id])
+  createdById   String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  userProducts  UserProduct[]
+  shoppingItems ShoppingItem[]
 }
 
 model UserCocktail {
