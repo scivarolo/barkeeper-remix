@@ -72,7 +72,7 @@ export default function CreateIngredient() {
         <h2 className="text-xl">Create New Ingredient</h2>
       </div>
       <Form method="post">
-        <Input name="name" placeholder="Name" required />
+        <Input name="name" placeholder="Name" required className="mr-3" />
         <select
           className="select-bordered select w-full max-w-xs"
           id="ingredientTypeId"

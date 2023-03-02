@@ -5,7 +5,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: string;
 }
 
-export default function Input({ error, id, ...props }: InputProps) {
+export default function Input({ error, id, className, ...props }: InputProps) {
   return (
     <>
       <input
@@ -15,7 +15,8 @@ export default function Input({ error, id, ...props }: InputProps) {
           "input",
           "w-full",
           "max-w-sm",
-          error ? ["input-error", "focus:input-error"] : "focus:input-primary"
+          error ? ["input-error", "focus:input-error"] : "focus:input-primary",
+          className
         )}
         aria-errormessage={error ? `${id}-error` : undefined}
         {...props}

@@ -1,13 +1,20 @@
 import { json, LoaderArgs } from "@remix-run/node";
 import { Link, Outlet, useLoaderData } from "@remix-run/react";
 import Container from "~/components/Container";
+import IngredientCard from "~/components/ingredients/Ingredient";
 import { db } from "~/utils/db.server";
 import { requireUserId } from "~/utils/session.server";
 
 export const loader = async ({ request }: LoaderArgs) => {
   await requireUserId(request);
 
-  const ingredients = await db.ingredient.findMany({ take: 10 });
+  const ingredients = await db.ingredient.findMany({
+    take: 10,
+    include: {
+      type: true,
+      _count: { select: { products: true, cocktails: true } },
+    },
+  });
 
   return json({ ingredients });
 };
@@ -42,7 +49,9 @@ export default function Ingredients() {
         {data.ingredients.length > 0 ? (
           <ul>
             {data.ingredients.map((ingredient) => (
-              <li key={ingredient.id}>{ingredient.name}</li>
+              <li key={ingredient.id}>
+                <IngredientCard ingredient={ingredient} />
+              </li>
             ))}
           </ul>
         ) : (
