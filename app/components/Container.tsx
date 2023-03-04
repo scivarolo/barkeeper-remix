@@ -11,7 +11,7 @@ export default function Container({
   return (
     <div
       className={classNames(
-        "rounded-xl border border-gray-100 bg-white p-6 dark:border-gray-700 dark:bg-gray-800",
+        "rounded-xl border border-gray-100 bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800",
         className
       )}>
       {children}

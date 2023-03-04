@@ -7,8 +7,8 @@ interface NavBarProps {
 
 export default function NavBar({ username }: NavBarProps) {
   return (
-    <div className="navbar w-full bg-primary text-white">
-      <div className="flex-1">
+    <div className="navbar w-full bg-primary">
+      <div className="flex-1 text-white">
         <a className="btn-ghost btn text-xl normal-case" href="/">
           Barkeeper
         </a>
@@ -17,7 +17,7 @@ export default function NavBar({ username }: NavBarProps) {
         </ul>
       </div>
       <div className="flex-none">
-        <ul className="menu menu-horizontal">
+        <ul className="menu menu-horizontal text-white">
           <NavButton to="/cocktails">Cocktails</NavButton>
           <NavButton to="/ingredients">Ingredients</NavButton>
         </ul>

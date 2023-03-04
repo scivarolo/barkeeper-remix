@@ -44,6 +44,7 @@ function App() {
   return (
     <html
       lang="en"
+      data-theme={theme}
       className={classNames(theme, "bg-gray-100", "dark:bg-gray-900")}>
       <head>
         <Meta />

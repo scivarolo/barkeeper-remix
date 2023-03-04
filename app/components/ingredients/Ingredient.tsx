@@ -13,7 +13,7 @@ interface IngredientProps {
 }
 export default function IngredientCard({ ingredient }: IngredientProps) {
   return (
-    <div className="card mb-3 border border-gray-700 p-3">
+    <div className="card mb-3 border bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-900">
       <div className="flex justify-between align-baseline">
         <h2 className="text-lg font-bold">{ingredient.name}</h2>
         <span className="badge-accent badge badge-md">
