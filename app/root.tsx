@@ -1,8 +1,4 @@
-import type {
-  ErrorBoundaryComponent,
-  LinksFunction,
-  MetaFunction,
-} from "@remix-run/node";
+import type { LinksFunction, LoaderArgs, MetaFunction } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -10,9 +6,18 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "@remix-run/react";
+import classNames from "classnames";
+import type { Theme } from "./contexts/ThemeContext";
+import {
+  NonFlashOfWrongThemeEls,
+  ThemeProvider,
+  useTheme,
+} from "./contexts/ThemeContext";
 
 import styles from "./styles/app.css";
+import { getThemeSession } from "./utils/theme.server";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
@@ -22,20 +27,46 @@ export const meta: MetaFunction = () => ({
   viewport: "width=device-width,initial-scale=1",
 });
 
-export default function App() {
+export type LoaderData = { theme: Theme | null };
+
+export async function loader({ request }: LoaderArgs) {
+  const themeSession = await getThemeSession(request);
+  const data: LoaderData = {
+    theme: themeSession.getTheme(),
+  };
+  console.log(data);
+  return data;
+}
+
+function App() {
+  const data = useLoaderData<typeof loader>();
+  const [theme] = useTheme();
   return (
-    <html lang="en" className="bg-gray-100 dark:bg-gray-900">
+    <html
+      lang="en"
+      className={classNames(theme, "bg-gray-100", "dark:bg-gray-900")}>
       <head>
         <Meta />
         <Links />
+        <NonFlashOfWrongThemeEls ssrTheme={Boolean(data.theme)} />
       </head>
-      <body>
+      <body className="min-h-screen bg-gray-100 dark:bg-gray-900">
         <Outlet />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
       </body>
     </html>
+  );
+}
+
+export default function AppWithProviders() {
+  const data = useLoaderData<typeof loader>();
+
+  return (
+    <ThemeProvider specifiedTheme={data.theme}>
+      <App />
+    </ThemeProvider>
   );
 }
 

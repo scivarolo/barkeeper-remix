@@ -1,11 +1,9 @@
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import bcrypt from "bcryptjs";
 import { db } from "./db.server";
+import { getRequiredServerEnvVar } from "./misc";
 
-const sessionSecret = process.env.SESSION_SECRET;
-if (!sessionSecret) {
-  throw new Error("SESSION_SECRET must be set");
-}
+const sessionSecret = getRequiredServerEnvVar("SESSION_SECRET");
 
 type LoginForm = { username: string; password: string };
 

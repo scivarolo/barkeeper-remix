@@ -7,7 +7,7 @@ interface ContainerProps {
 export default function Container({
   children,
   className,
-}: React.PropsWithChildren) {
+}: React.PropsWithChildren<ContainerProps>) {
   return (
     <div
       className={classNames(

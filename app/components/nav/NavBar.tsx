@@ -1,5 +1,5 @@
-import { User } from "@prisma/client";
 import { NavLink, useSubmit } from "@remix-run/react";
+import { ThemeToggle } from "~/contexts/ThemeContext";
 
 interface NavBarProps {
   username: string;
@@ -54,6 +54,9 @@ function AuthMenu({ username }: AuthMenuProps) {
         className="dropdown-content menu rounded-box w-52 bg-base-100 p-2 shadow">
         <li>
           <p>Hi {username}</p>
+        </li>
+        <li>
+          <ThemeToggle />
         </li>
         <li>
           <a
