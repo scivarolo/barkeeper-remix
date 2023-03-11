@@ -69,8 +69,6 @@ model Product {
   name          String
   ingredient    Ingredient     @relation(fields: [ingredientId], references: [id])
   ingredientId  Int
-  quantity      Int
-  unit          String
   createdBy     User           @relation(fields: [createdById], references: [id])
   createdById   String
   createdAt     DateTime       @default(now())

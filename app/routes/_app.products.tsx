@@ -2,30 +2,30 @@ import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, Outlet, useLoaderData } from "@remix-run/react";
 import Container from "~/components/Container";
-import IngredientCard from "~/components/ingredients/Ingredient";
+import ProductCard from "~/components/products/ProductCard";
 import { db } from "~/utils/db.server";
 import { requireUserId } from "~/utils/session.server";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export async function loader({ request }: LoaderArgs) {
   await requireUserId(request);
 
-  const ingredients = await db.ingredient.findMany({
+  const products = await db.product.findMany({
     take: 10,
     include: {
-      type: true,
-      _count: { select: { products: true, cocktails: true } },
+      ingredient: { select: { name: true } },
     },
   });
 
-  return json({ ingredients });
-};
+  return json({ products });
+}
 
-export default function Ingredients() {
+export default function Products() {
   const data = useLoaderData<typeof loader>();
+
   return (
     <>
       <div className="mb-4 flex">
-        <h1 className="text-3xl font-bold">Ingredients</h1>
+        <h1 className="text-3xl font-bold">Products</h1>
         <div className="ml-auto">
           <Link to="create" className="btn-primary btn gap-2">
             <svg
@@ -41,22 +41,22 @@ export default function Ingredients() {
                 d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            Ingredient
+            Product
           </Link>
         </div>
       </div>
       <Outlet />
       <Container>
-        {data.ingredients.length > 0 ? (
+        {data.products.length > 0 ? (
           <ul>
-            {data.ingredients.map((ingredient) => (
-              <li key={ingredient.id}>
-                <IngredientCard ingredient={ingredient} />
+            {data.products.map((product) => (
+              <li key={product.id}>
+                <ProductCard product={product} />
               </li>
             ))}
           </ul>
         ) : (
-          <h1>No ingredients yet!</h1>
+          <h1>No products yet!</h1>
         )}
       </Container>
     </>

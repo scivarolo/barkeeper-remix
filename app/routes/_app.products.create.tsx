@@ -9,10 +9,11 @@ import { requireUserId } from "~/utils/session.server";
 
 export async function loader({ request }: LoaderArgs) {
   await requireUserId(request);
-  const ingredientTypes = await db.ingredientType.findMany({
+  const ingredients = await db.ingredient.findMany({
     orderBy: { name: "asc" },
   });
-  return json({ ingredientTypes });
+
+  return json({ ingredients });
 }
 
 export async function action({ request }: ActionArgs) {
@@ -21,71 +22,71 @@ export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
 
   const name = formData.get("name");
-  const ingredientTypeId = formData.get("ingredientTypeId");
+  const ingredientId = formData.get("ingredientId");
   if (
     typeof name !== "string" ||
     name === "" ||
-    typeof Number(ingredientTypeId) !== "number"
+    typeof Number(ingredientId) !== "number"
   ) {
     return badRequest({
       fieldErrors: null,
-      fields: null,
+      fields: { name, ingredientId },
       formError: "Invalid submission",
     });
   }
 
-  const exists = await db.ingredient.findFirst({
+  const exists = await db.product.findFirst({
     where: { name: { equals: name, mode: "insensitive" } },
   });
   if (exists !== null) {
     return badRequest({
       fieldErrors: null,
-      fields: { name, ingredientTypeId },
-      formError: "An ingredient with this name already exists",
+      fields: { name, ingredientId },
+      formError: "A product with this name already exists",
     });
   }
   try {
-    await db.ingredient.create({
+    await db.product.create({
       data: {
-        name: name,
-        ingredientTypeId: Number(ingredientTypeId),
+        name,
+        ingredientId: Number(ingredientId),
         createdById: userId,
       },
     });
   } catch (error) {
     return badRequest({
       fieldErrors: null,
-      fields: { name, ingredientTypeId },
-      formError: "something when wrong",
+      fields: { name, ingredientId },
+      formError: "something went wrong",
     });
   }
 
-  return redirect("/ingredients");
+  return redirect("/products");
 }
 
-export default function CreateIngredient() {
-  const actionData = useActionData<typeof action>();
+export default function ProductForm() {
   const data = useLoaderData<typeof loader>();
+  const actionData = useActionData<typeof action>();
 
   return (
     <Container className="mb-5">
       <div className="mb-3">
-        <h2 className="text-xl">Create New Ingredient</h2>
+        <h2 className="text-xl">Create New Product</h2>
       </div>
       <Form method="post">
         <Input name="name" placeholder="Name" required className="mr-3" />
         <select
           className="select-bordered select w-full max-w-xs"
-          id="ingredientTypeId"
-          name="ingredientTypeId"
+          id="ingredientId"
+          name="ingredientId"
           defaultValue=""
           required>
           <option disabled value="">
-            Ingredient type
+            Select product type...
           </option>
-          {data.ingredientTypes.map((ingredientType) => (
-            <option key={ingredientType.id} value={ingredientType.id}>
-              {ingredientType.name}
+          {data.ingredients.map((ingredient) => (
+            <option key={ingredient.id} value={ingredient.id}>
+              {ingredient.name}
             </option>
           ))}
         </select>
@@ -94,13 +95,11 @@ export default function CreateIngredient() {
             <div className="alert alert-error">{actionData.formError}</div>
           ) : null}
           <span className="ml-auto flex-none">
-            <Link
-              to="/ingredients"
-              className="btn-gray-500 btn-outline btn mr-3">
+            <Link to="/products" className="btn-gray-500 btn-outline btn mr-3">
               Cancel
             </Link>
             <button type="submit" className="btn-primary btn">
-              Save Ingredient
+              Save Product
             </button>
           </span>
         </div>

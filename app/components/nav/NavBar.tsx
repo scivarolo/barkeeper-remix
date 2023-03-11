@@ -20,6 +20,7 @@ export default function NavBar({ username }: NavBarProps) {
         <ul className="menu menu-horizontal text-white">
           <NavButton to="/cocktails">Cocktails</NavButton>
           <NavButton to="/ingredients">Ingredients</NavButton>
+          <NavButton to="/products">Products</NavButton>
         </ul>
         <AuthMenu username={username} />
       </div>
